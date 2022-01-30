@@ -1,0 +1,146 @@
+cmake_minimum_required(VERSION 2.8.8)
+project(Tracking)
+
+#To put all the executables in build directory
+SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}) 
+
+enable_language(CXX)
+
+#Added to detect compiler support for C++11
+include(CheckCXXCompilerFlag)
+CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
+if(COMPILER_SUPPORTS_CXX11)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+elseif(COMPILER_SUPPORTS_CXX0X)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+else()
+    message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
+endif()
+
+################################################################################
+if (NOT CMAKE_BUILD_TYPE)
+  message(STATUS "No build type selected, default to Release")
+  set(CMAKE_BUILD_TYPE "Release")
+endif()
+string(TOUPPER ${CMAKE_BUILD_TYPE} _build_type)
+
+# Setting the C++ compiler to use
+set("${CMAKE_CXX_COMPILER_ID}" TRUE CACHE STRING "C++ Compiler")
+if (NOT GNU AND NOT Clang AND NOT Intel)
+  message(WARNING "Unsupported compiler. Build will likely fail.")
+endif()
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/modules)
+
+include(MacroUtilities)
+################################################################################
+
+# see if we have CCACHE ( to avoid recompilation on branch switches )
+find_program(CCACHE_FOUND ccache)
+if(CCACHE_FOUND)
+  message(STATUS "found ccache")
+  set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)
+  set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK ccache)
+endif(CCACHE_FOUND)
+
+option(ROOT "Enable ROOT" ON)
+if(ROOT)
+add_definitions(-DUSE_ROOT)
+find_package(ROOT REQUIRED)
+include_directories(AFTER SYSTEM ${ROOT_INCLUDE_DIR})
+set(EXTERNAL_LIBS ${EXTERNAL_LIBS}
+${ROOT_LIBRARIES}
+)
+
+option(WITH_GEANT4_UIVIS "Build example with Geant4 UI and Vis drivers" ON)
+if(WITH_GEANT4_UIVIS)
+  find_package(Geant4 REQUIRED ui_all vis_all)
+else()
+  find_package(Geant4 REQUIRED)
+endif()
+
+include(${Geant4_USE_FILE})
+set(EXTERNAL_LIBS ${EXTERNAL_LIBS}
+${Geant4_LIBRARIES}
+)
+
+
+set(EXTERNAL_LIBS ${EXTERNAL_LIBS}
+Eve Geom
+)
+
+endif(ROOT)
+
+add_subdirectory(visualizer)
+#file(GLOB headers ${headers} ${CMAKE_SOURCE_DIR}/visualizer/Eve/*.h)
+#file(GLOB sources ${sources}  ${CMAKE_SOURCE_DIR}/visualizer/Eve/*.cpp )
+
+set(INCLUDES ${INCLUDES}
+${CMAKE_SOURCE_DIR}/visualizer
+${CMAKE_SOURCE_DIR}/visualizer/EVE
+${CMAKE_SOURCE_DIR}/visualizer/EVE/inc
+${CMAKE_SOURCE_DIR}/processor/inc
+${CMAKE_SOURCE_DIR}/CoordinateGenerator/inc
+${CMAKE_SOURCE_DIR}/base
+${CMAKE_SOURCE_DIR}
+)
+
+macro(include_dirs INCLUDES)
+  foreach(INCLUDE ${INCLUDES})
+    #message(STATUS "Following : "${INCLUDE})
+    include_directories(${INCLUDE})
+  endforeach()
+endmacro()
+
+#COLLECTING ALL HEADER FILES
+macro(collect_headers INCLUDES)
+  foreach(INCLUDE ${INCLUDES})
+    file(GLOB headers ${headers} ${INCLUDE}/*.h)
+  endforeach()
+endmacro()
+
+#COLLECTING ALL SOURCE FILES
+set(SOURCES ${SOURCES}
+#${CMAKE_SOURCE_DIR}/visualizer/EVE
+${CMAKE_SOURCE_DIR}/processor/src
+${CMAKE_SOURCE_DIR}/CoordinateGenerator/src
+)
+macro(collect_sources SOURCES)
+  foreach(SOURCE ${SOURCES})
+    file(GLOB sources ${sources} ${SOURCE}/*.cpp)
+  endforeach()
+endmacro()
+
+
+SET(TESTSDIR ${TESTSDIR}
+${CMAKE_SOURCE_DIR}/test
+#${CMAKE_SOURCE_DIR}/CoordinateGenerator/test
+)
+
+#COLLECTING ALL TEST FILES
+macro(collect_tests TESTS)
+  foreach(TEST ${TESTS})
+    file(GLOB tests ${tests} ${TEST}/*.cpp)
+  endforeach()
+endmacro()
+
+macro(build_executables EXECUTABLES)
+  foreach(EXECUTABLE ${EXECUTABLES})
+    get_filename_component(TARGET_NAME ${EXECUTABLE} NAME_WE)
+    add_executable(${TARGET_NAME} ${EXECUTABLE} ${headers})
+    target_link_libraries(${TARGET_NAME} ${TOMOLIB} )
+ endforeach()
+endmacro()
+
+
+#message(STATUS ${headers})
+include_dirs("${INCLUDES}")
+collect_headers("${INCLUDES}")
+collect_sources("${SOURCES}")
+collect_tests("${TESTSDIR}")
+add_library(Tomo SHARED ${sources} ${helpers})
+target_link_libraries(Tomo ${EXTERNAL_LIBS} )
+#link_directories(${CMAKE_SOURCE_DIR}/build)
+build_executables("${tests}")
+message(STATUS ${headers})
