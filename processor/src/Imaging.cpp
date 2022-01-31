@@ -52,7 +52,7 @@ Vec_t ImageReconstruction::POCA(Vec_t p, Vec_t u, Vec_t q, Vec_t v, Vec_t &p1, V
 	//Vec_t
 	q1 = q + v*t;
 
-	std::cout <<"S : " << s <<" : T : " << t << std::endl;
+	//std::cout <<"S : " << s <<" : T : " << t << std::endl;
 	return (p1+q1)/2.;
 	//return s;
 	}

@@ -102,7 +102,8 @@ endmacro()
 
 #COLLECTING ALL SOURCE FILES
 set(SOURCES ${SOURCES}
-#${PROJECT_SOURCE_DIR}/visualizer/EVE
+${PROJECT_SOURCE_DIR}/visualizer/Eve/src
+${PROJECT_SOURCE_DIR}/visualizer
 ${PROJECT_SOURCE_DIR}/processor/src
 ${PROJECT_SOURCE_DIR}/CoordinateGenerator/src
 )
@@ -139,8 +140,8 @@ include_dirs("${INCLUDES}")
 collect_headers("${INCLUDES}")
 collect_sources("${SOURCES}")
 collect_tests("${TESTSDIR}")
-add_library(Tomo SHARED ${sources} ${helpers})
-target_link_libraries(Tomo ${EXTERNAL_LIBS} )
+add_library(TrackingLib SHARED ${sources} ${helpers})
+target_link_libraries(TrackingLib ${EXTERNAL_LIBS} )
 #link_directories(${PROJECT_SOURCE_DIR}/build)
 build_executables("${tests}")
-message(STATUS ${headers})
+#message(STATUS ${headers})
