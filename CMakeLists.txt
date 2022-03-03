@@ -68,9 +68,9 @@ ${Geant4_LIBRARIES}
 add_subdirectory(CRY_Manual_Interface)
 add_subdirectory(visualizer)
 link_directories(${PROJECT_SOURCE_DIR}/visualizer)
-
+link_directories(${PROJECT_SOURCE_DIR}/CRY_Manual_Interface)
 set(EXTERNAL_LIBS ${EXTERNAL_LIBS}
-Eve Geom Visualizer
+Eve Geom Visualizer cry_manual_interface
 )
 
 endif(ROOT)
@@ -122,6 +122,7 @@ endmacro()
 SET(TESTSDIR ${TESTSDIR}
 ${PROJECT_SOURCE_DIR}/test
 #${PROJECT_SOURCE_DIR}/CoordinateGenerator/test
+${PROJECT_SOURCE_DIR}/CRY_Manual_Interface/test
 )
 
 #COLLECTING ALL TEST FILES
@@ -135,7 +136,7 @@ macro(build_executables EXECUTABLES)
   foreach(EXECUTABLE ${EXECUTABLES})
     get_filename_component(TARGET_NAME ${EXECUTABLE} NAME_WE)
     add_executable(${TARGET_NAME} ${EXECUTABLE} ${headers})
-    target_link_libraries(${TARGET_NAME} ${TOMOLIB} )
+    target_link_libraries(${TARGET_NAME} ${TOMOLIB} TrackingLib)
  endforeach()
 endmacro()
 
