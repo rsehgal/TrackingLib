@@ -1,0 +1,8 @@
+A shortcut technique to sample muons from CRY.
+
+We had already done the sampling from CRY and store the energy 
+and direction in Muon-50L.root file.
+
+Also provide a reader to read data from this sample muon file
+When user read, he get an object, which he can use to get the 
+muon direction and energy.

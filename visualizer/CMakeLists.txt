@@ -52,7 +52,7 @@ target_link_libraries(Visualizer ${ROOT_LIBRARIES} Eve Geom)
 #file(GLOB headers ${PROJECT_SOURCE_DIR}/inc/*.h ../../base/Vector3D.h ../ml/ml.h) 
 
 SET(TESTSDIR ${TESTSDIR}
-${CMAKE_SOURCE_DIR}/test
+${CMAKE_CURRENT_SOURCE_DIR}/test
 )
 
 #COLLECTING ALL TEST FILES

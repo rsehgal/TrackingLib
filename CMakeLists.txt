@@ -65,14 +65,16 @@ set(EXTERNAL_LIBS ${EXTERNAL_LIBS}
 ${Geant4_LIBRARIES}
 )
 
+add_subdirectory(CRY_Manual_Interface)
+add_subdirectory(visualizer)
+link_directories(${PROJECT_SOURCE_DIR}/visualizer)
 
 set(EXTERNAL_LIBS ${EXTERNAL_LIBS}
-Eve Geom
+Eve Geom Visualizer
 )
 
 endif(ROOT)
 
-add_subdirectory(visualizer)
 #file(GLOB headers ${headers} ${PROJECT_SOURCE_DIR}/visualizer/Eve/*.h)
 #file(GLOB sources ${sources}  ${PROJECT_SOURCE_DIR}/visualizer/Eve/*.cpp )
 
@@ -83,6 +85,8 @@ ${PROJECT_SOURCE_DIR}/visualizer/Eve/inc
 ${PROJECT_SOURCE_DIR}/processor/inc
 ${PROJECT_SOURCE_DIR}/CoordinateGenerator/inc
 ${PROJECT_SOURCE_DIR}/base
+${PROJECT_SOURCE_DIR}/CRY_Manual_Interface/inc
+${PROJECT_SOURCE_DIR}/CRY_Manual_Interface/Cry/inc
 ${PROJECT_SOURCE_DIR}
 )
 
@@ -106,6 +110,7 @@ ${PROJECT_SOURCE_DIR}/visualizer/Eve/src
 ${PROJECT_SOURCE_DIR}/visualizer
 ${PROJECT_SOURCE_DIR}/processor/src
 ${PROJECT_SOURCE_DIR}/CoordinateGenerator/src
+${PROJECT_SOURCE_DIR}/CRY_Manual_Interface/src
 )
 macro(collect_sources SOURCES)
   foreach(SOURCE ${SOURCES})
