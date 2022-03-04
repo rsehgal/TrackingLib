@@ -27,29 +27,18 @@ include_directories(${ROOT_INCLUDE_DIR})
 #find_package(Geant4 REQUIRED)
 #include(${Geant4_USE_FILE})
 include_directories(${PROJECT_SOURCE_DIR}/inc)
-include_directories(.)
 include_directories(..)
 include_directories(../base)
-include_directories(Eve/inc)
+include_directories(inc)
 include_directories(../processor/inc)
-#include_directories(../inc)
-#include_directories(../../base)
-#include_directories(../analysis_V2/inc)
-#include_directories(../../Helpers/inc)
-#include_directories(../../TemplatizedInterface/inc)
-#include_directories(Eve/inc)
 
 find_package(Geant4 REQUIRED)
 include(${Geant4_USE_FILE})
-#ROOT_GENERATE_DICTIONARY(G__Tomo ../inc/Point3D.h LINKDEF ../inc/DictLinkDef.h)
 
-file(GLOB visualizerSources Eve/src/*.cpp *.cpp ../processor/src/CommonFunc.cpp ../processor/src/Track.cpp) 
-#file(GLOB visualizerSources Eve/src/*.cpp *.cpp ../../Helpers/src/CommonFunc.cpp ../../Helpers/src/Track.cpp ../analysis_V2/src/Point3D.cpp ../inc/PsBar.cpp) 
+file(GLOB visualizerSources src/*.cpp ../processor/src/CommonFunc.cpp ../processor/src/Track.cpp) 
 add_library(Visualizer SHARED ${visualizerSources})
 target_link_libraries(Visualizer ${ROOT_LIBRARIES} Eve Geom)
 
-
-#file(GLOB headers ${PROJECT_SOURCE_DIR}/inc/*.h ../../base/Vector3D.h ../ml/ml.h) 
 
 SET(TESTSDIR ${TESTSDIR}
 ${CMAKE_CURRENT_SOURCE_DIR}/test

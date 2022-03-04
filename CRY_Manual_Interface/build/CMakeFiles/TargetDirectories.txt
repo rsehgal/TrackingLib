@@ -1,4 +1,0 @@
-/home/rsehgal/TrackingLib/CRY_Manual_Interface/build/CMakeFiles/rebuild_cache.dir
-/home/rsehgal/TrackingLib/CRY_Manual_Interface/build/CMakeFiles/edit_cache.dir
-/home/rsehgal/TrackingLib/CRY_Manual_Interface/build/CMakeFiles/cry_manual_interface.dir
-/home/rsehgal/TrackingLib/CRY_Manual_Interface/build/CMakeFiles/cry.dir

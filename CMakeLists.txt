@@ -65,12 +65,15 @@ set(EXTERNAL_LIBS ${EXTERNAL_LIBS}
 ${Geant4_LIBRARIES}
 )
 
+add_subdirectory(CRY)
 add_subdirectory(CRY_Manual_Interface)
 add_subdirectory(visualizer)
+link_directories(${PROJECT_SOURCE_DIR}/CRY)
 link_directories(${PROJECT_SOURCE_DIR}/visualizer)
 link_directories(${PROJECT_SOURCE_DIR}/CRY_Manual_Interface)
+
 set(EXTERNAL_LIBS ${EXTERNAL_LIBS}
-Eve Geom Visualizer cry_manual_interface
+Eve Geom Visualizer cry cry_manual_interface 
 )
 
 endif(ROOT)
@@ -79,14 +82,12 @@ endif(ROOT)
 #file(GLOB sources ${sources}  ${PROJECT_SOURCE_DIR}/visualizer/Eve/*.cpp )
 
 set(INCLUDES ${INCLUDES}
-${PROJECT_SOURCE_DIR}/visualizer
-#${PROJECT_SOURCE_DIR}/visualizer/Eve
-${PROJECT_SOURCE_DIR}/visualizer/Eve/inc
+${PROJECT_SOURCE_DIR}/visualizer/inc
 ${PROJECT_SOURCE_DIR}/processor/inc
 ${PROJECT_SOURCE_DIR}/CoordinateGenerator/inc
 ${PROJECT_SOURCE_DIR}/base
 ${PROJECT_SOURCE_DIR}/CRY_Manual_Interface/inc
-${PROJECT_SOURCE_DIR}/CRY_Manual_Interface/Cry/inc
+${PROJECT_SOURCE_DIR}/CRY/inc
 ${PROJECT_SOURCE_DIR}
 )
 
@@ -106,11 +107,10 @@ endmacro()
 
 #COLLECTING ALL SOURCE FILES
 set(SOURCES ${SOURCES}
-${PROJECT_SOURCE_DIR}/visualizer/Eve/src
-${PROJECT_SOURCE_DIR}/visualizer
+#${PROJECT_SOURCE_DIR}/visualizer/src
 ${PROJECT_SOURCE_DIR}/processor/src
 ${PROJECT_SOURCE_DIR}/CoordinateGenerator/src
-${PROJECT_SOURCE_DIR}/CRY_Manual_Interface/src
+#${PROJECT_SOURCE_DIR}/CRY_Manual_Interface/src
 )
 macro(collect_sources SOURCES)
   foreach(SOURCE ${SOURCES})
@@ -120,9 +120,9 @@ endmacro()
 
 
 SET(TESTSDIR ${TESTSDIR}
-${PROJECT_SOURCE_DIR}/test
+#${PROJECT_SOURCE_DIR}/test
 #${PROJECT_SOURCE_DIR}/CoordinateGenerator/test
-${PROJECT_SOURCE_DIR}/CRY_Manual_Interface/test
+#${PROJECT_SOURCE_DIR}/CRY_Manual_Interface/test
 )
 
 #COLLECTING ALL TEST FILES

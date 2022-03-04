@@ -21,13 +21,13 @@ endif()
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake/modules)
 find_package(ROOT REQUIRED)
 include_directories(${ROOT_INCLUDE_DIR})
-include_directories(Cry/inc)
+include_directories(../CRY/inc)
 include_directories(inc)
 
-file(GLOB headersCry ${headersCry} Cry/inc/*.h )
-file(GLOB sourcesCry ${sourcesCry} Cry/src/*.cc)
-add_library(cry SHARED ${sourcesCry})
+#file(GLOB headersCry ${headersCry} Cry/inc/*.h )
+#file(GLOB sourcesCry ${sourcesCry} Cry/src/*.cc)
+#add_library(cry SHARED ${sourcesCry})
 
 add_library(cry_manual_interface SHARED src/cry_manual_interface.cpp src/MuonReader.cpp )
-target_link_libraries(cry_manual_interface cry ${ROOT_LIBRARIES})
+target_link_libraries(cry_manual_interface cry ${ROOT_LIBRARIES} cry)
 
